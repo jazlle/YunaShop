@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - include:
+      file: changes/001-create-customer-accounts.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changes/002-create-payments.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changes/003-seed-customer-accounts.yaml
+      relativeToChangelogFile: true

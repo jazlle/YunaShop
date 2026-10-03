@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-customer-accounts
+      author: yunashop
+      changes:
+        - createTable:
+            tableName: customer_accounts
+            columns:
+              - column:
+                  name: customer_id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: balance
+                  type: numeric(12, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: bigint
+        - addCheckConstraint:
+            tableName: customer_accounts
+            constraintName: chk_customer_accounts_balance
+            constraintBody: balance >= 0

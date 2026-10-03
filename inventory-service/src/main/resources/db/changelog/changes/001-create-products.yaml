@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-products
+      author: yunashop
+      changes:
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  type: varchar(64)
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: numeric(12, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: available_quantity
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: bigint
+        - addCheckConstraint:
+            tableName: products
+            constraintName: chk_products_available_quantity
+            constraintBody: available_quantity >= 0

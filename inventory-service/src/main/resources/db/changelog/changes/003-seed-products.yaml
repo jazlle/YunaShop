@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-seed-products
+      author: yunashop
+      comment: Jeu de données de démo
+      changes:
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: id, value: KB-001 }
+              - column: { name: name, value: Clavier mécanique }
+              - column: { name: price, valueNumeric: 89.90 }
+              - column: { name: available_quantity, valueNumeric: 50 }
+              - column: { name: version, valueNumeric: 0 }
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: id, value: MS-001 }
+              - column: { name: name, value: Souris sans fil }
+              - column: { name: price, valueNumeric: 29.90 }
+              - column: { name: available_quantity, valueNumeric: 100 }
+              - column: { name: version, valueNumeric: 0 }
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: id, value: SC-001 }
+              - column: { name: name, value: Écran 27 pouces }
+              - column: { name: price, valueNumeric: 249.00 }
+              - column: { name: available_quantity, valueNumeric: 5 }
+              - column: { name: version, valueNumeric: 0 }

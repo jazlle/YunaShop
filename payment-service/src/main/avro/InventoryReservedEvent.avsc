@@ -1,0 +1,13 @@
+{
+  "type": "record",
+  "namespace": "com.yuna.yunashop.events",
+  "name": "InventoryReservedEvent",
+  "doc": "Publié par inventory-service sur inventory.reserved : stock réservé, montant calculé.",
+  "fields": [
+    {"name": "orderId", "type": {"type": "string", "logicalType": "uuid"}},
+    {"name": "customerId", "type": "string"},
+    {"name": "productId", "type": "string"},
+    {"name": "quantity", "type": "int"},
+    {"name": "totalAmount", "type": {"type": "bytes", "logicalType": "decimal", "precision": 12, "scale": 2}}
+  ]
+}

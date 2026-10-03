@@ -1,0 +1,10 @@
+{
+  "type": "record",
+  "namespace": "com.yuna.yunashop.events",
+  "name": "PaymentFailedEvent",
+  "doc": "Publié par payment-service sur payment.failed : déclenche la compensation (libération du stock).",
+  "fields": [
+    {"name": "orderId", "type": {"type": "string", "logicalType": "uuid"}},
+    {"name": "reason", "type": "string"}
+  ]
+}
