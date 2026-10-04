@@ -29,7 +29,5 @@ databaseChangeLog:
               - column:
                   name: version
                   type: bigint
-        - addCheckConstraint:
-            tableName: products
-            constraintName: chk_products_available_quantity
-            constraintBody: available_quantity >= 0
+        - sql:
+            sql: ALTER TABLE products ADD CONSTRAINT chk_products_available_quantity CHECK (available_quantity >= 0)

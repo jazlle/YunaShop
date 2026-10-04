@@ -19,7 +19,5 @@ databaseChangeLog:
               - column:
                   name: version
                   type: bigint
-        - addCheckConstraint:
-            tableName: customer_accounts
-            constraintName: chk_customer_accounts_balance
-            constraintBody: balance >= 0
+        - sql:
+            sql: ALTER TABLE customer_accounts ADD CONSTRAINT chk_customer_accounts_balance CHECK (balance >= 0)

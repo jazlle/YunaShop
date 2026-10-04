@@ -22,16 +22,6 @@ POST /api/orders ─► order.created ─► inventory ─┬─► inventory.re
 Les consommateurs sont idempotents (une réservation / un paiement par `orderId`) : un message rejoué republie
 le même résultat sans décrémenter le stock ni débiter deux fois.
 
-## Services autonomes (prêts à être extraits du monorepo)
-
-Aucun code n'est partagé entre les services :
-
-- chaque `pom.xml` hérite directement de `spring-boot-starter-parent` ; le `pom.xml` racine est un simple agrégateur ;
-- chaque service embarque **sa copie** des contrats d'événements dont il a besoin (`src/main/avro/*.avsc`)
-  et sa propre classe `Topics`.
-
-Pour extraire un service dans son propre dépôt : copier son dossier, plus `mvnw`, `mvnw.cmd` et `.mvn/`.
-
 ### Contrats Avro
 
 | Événement (topic)                            | Producteur | Consommateurs     |
@@ -49,10 +39,44 @@ Règles à respecter sur les copies dupliquées :
 - **garder le même `namespace` + `name`** (`com.yuna.yunashop.events.*`) : le désérialiseur Confluent retrouve
   la classe Java à partir du nom complet du schéma du producteur ;
 - **faire évoluer les schémas de façon compatible** (ajout de champ avec valeur par défaut, etc.) :
-  le registry est configuré en compatibilité `BACKWARD` et refusera un schéma incompatible.
+  le registry est configuré en compatibilité `FULL_TRANSITIVE` (chaque nouvelle version est comparée à toutes
+  les précédentes, dans les deux sens) et refusera un schéma incompatible.
   C'est le registry, et non plus un module partagé, qui garantit la cohérence entre services.
 
 Schémas enregistrés (sujets `<topic>-value`) : `curl localhost:8085/subjects`.
+
+### Versions de schéma utilisées par chaque service
+
+Le registry ne sait pas quelle version les consommateurs ont compilée : chaque service l'expose dans
+`/actuator/info` (avec la version de l'application, section `build`) :
+
+```bash
+curl localhost:8081/actuator/info
+```
+
+```json
+{
+  "avroSchemas": {
+    "payment.completed-value": {
+      "topic": "payment.completed", "role": "CONSUMER",
+      "record": "com.yuna.yunashop.events.PaymentCompletedEvent", "fingerprint": "9ef423c6ec52a6a5",
+      "registered": true, "version": 1, "id": 2, "latestVersion": 2, "upToDate": false
+    }
+  }
+}
+```
+
+| Champ                  | Signification                                                                           |
+|------------------------|-----------------------------------------------------------------------------------------|
+| `version` / `id`       | Version et ID dans le registry du schéma compilé dans ce service                        |
+| `latestVersion`        | Dernière version enregistrée (`null` : le producteur n'a encore rien publié)            |
+| `upToDate`             | `false` : une version plus récente existe (normal pour un consommateur pas encore mis à jour) |
+| `registered: false`    | La copie locale ne correspond à aucune version enregistrée                              |
+| `compatibleWithLatest` | Présent dans ce cas : indique si cette copie divergente reste compatible                |
+| `fingerprint`          | Empreinte de la forme canonique : deux services avec la même empreinte ont le même contrat |
+
+La liste des contrats d'un service est déclarée dans `messaging/SchemaVersionInfoContributor` (`CONTRACTS`) :
+l'y ajouter quand le service produit ou consomme un nouvel événement.
 
 ### Liquibase
 

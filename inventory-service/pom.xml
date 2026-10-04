@@ -16,7 +16,7 @@
     <properties>
         <java.version>27</java.version>
         <avro.version>1.12.2</avro.version>
-        <confluent.version>8.2.4</confluent.version>
+        <confluent.version>8.3.2</confluent.version>
     </properties>
 
     <repositories>
@@ -73,6 +73,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <!-- Expose groupe/artefact/version/date de build dans /actuator/info -->
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!-- Génère les classes Java des événements à partir des schémas src/main/avro/*.avsc -->
             <plugin>
