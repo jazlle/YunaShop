@@ -7,6 +7,6 @@ public enum OrderStatus {
     CONFIRMED,
     /** Stock insuffisant ou produit inconnu. */
     REJECTED,
-    /** Paiement refusé : le stock réservé a été libéré. */
+    /** Paiement refusé (le stock réservé a été libéré) ou saga expirée : voir {@code failureReason}. */
     CANCELLED
 }

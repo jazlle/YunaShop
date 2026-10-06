@@ -1,6 +1,7 @@
 package com.yuna.yunashop.order.messaging;
 
 import com.yuna.yunashop.events.InventoryFailedEvent;
+import com.yuna.yunashop.events.OrderCancelledEvent;
 import com.yuna.yunashop.events.OrderCreatedEvent;
 import com.yuna.yunashop.events.PaymentCompletedEvent;
 import com.yuna.yunashop.events.PaymentFailedEvent;
@@ -43,6 +44,7 @@ class SchemaVersionInfoContributor implements InfoContributor {
 
     private static final List<EventContract> CONTRACTS = List.of(
             new EventContract(Topics.ORDER_CREATED, Role.PRODUCER, OrderCreatedEvent.getClassSchema()),
+            new EventContract(Topics.ORDER_CANCELLED, Role.PRODUCER, OrderCancelledEvent.getClassSchema()),
             new EventContract(Topics.INVENTORY_FAILED, Role.CONSUMER, InventoryFailedEvent.getClassSchema()),
             new EventContract(Topics.PAYMENT_COMPLETED, Role.CONSUMER, PaymentCompletedEvent.getClassSchema()),
             new EventContract(Topics.PAYMENT_FAILED, Role.CONSUMER, PaymentFailedEvent.getClassSchema()));

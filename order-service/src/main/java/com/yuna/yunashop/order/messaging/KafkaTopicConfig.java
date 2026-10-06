@@ -13,4 +13,9 @@ class KafkaTopicConfig {
     NewTopic orderCreatedTopic() {
         return TopicBuilder.name(Topics.ORDER_CREATED).partitions(3).replicas(1).build();
     }
+
+    @Bean
+    NewTopic orderCancelledTopic() {
+        return TopicBuilder.name(Topics.ORDER_CANCELLED).partitions(3).replicas(1).build();
+    }
 }

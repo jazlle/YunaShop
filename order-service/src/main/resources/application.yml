@@ -32,6 +32,18 @@ spring:
         # Désérialise vers les classes générées (SpecificRecord) plutôt que GenericRecord
         specific.avro.reader: true
 
+yunashop:
+  outbox:
+    # Délai entre deux passages du relais (latence max ajoutée à la publication d'un événement).
+    poll-interval: 500ms
+    batch-size: 100
+    send-timeout: 10s
+  saga:
+    # Une commande encore PENDING après ce délai est annulée et order.cancelled est publié.
+    timeout: 5m
+    timeout-check-interval: 30s
+    timeout-batch-size: 100
+
 management:
   endpoints:
     web:

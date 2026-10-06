@@ -2,8 +2,11 @@ package com.yuna.yunashop.order;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
+/** Le scheduling fait tourner le relais de l'outbox et le timeout de saga. */
 @SpringBootApplication
+@EnableScheduling
 public class OrderServiceApplication {
 
     /** Package des classes générées depuis les schémas Avro (src/main/avro). */
